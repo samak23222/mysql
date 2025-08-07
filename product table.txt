@@ -1,0 +1,253 @@
+product table:
+
+mysql> use product;
+Database changed
+mysql> create table product(product_id int,product_name varchar(100),category varchar(50),unit_price  decimal(10,2));
+ERROR 1050 (42S01): Table 'product' already exists
+mysql> use table product;
+ERROR 1049 (42000): Unknown database 'table'
+mysql> use product values;
+Database changed
+mysql> insert into product values(101,'laptop','electronics',500.00)'(102,'smartphone',300.00),(103,  'headphones','electronics',30.00),(104,'keyboard','electronics',20.00),(105,'mouse','electronics',15.00);
+    '> insert into product values(101,'laptop','electronics',500.00)'(102,'smartphone','electronics',300.00),(103,  'headphones','electronics',30.00),(104,'keyboard','electronics',20.00),(105,'mouse','electronics',15.00);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''(102,'smartphone',300.00),(103,  'headphones','electronics',30.00),(104,'keyboa' at line 1
+mysql> insert into product values(101,'laptop','electronics',500.00),(102,'smartphone','electronics',300.00),(103,  'headphones','electronics',30.00),(104,'keyboard','electronics',20.00),(105,'mouse','electronics',15.00);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from product;
++------------+--------------+-------------+------------+
+| product_id | product_name | category    | unit_price |
++------------+--------------+-------------+------------+
+|        101 | laptop       | electronics |     500.00 |
+|        102 | smartphone   | electronics |     300.00 |
+|        103 | headphones   | electronics |      30.00 |
+|        104 | keyboard     | electronics |      20.00 |
+|        105 | mouse        | electronics |      15.00 |
++------------+--------------+-------------+------------+
+5 rows in set (0.01 sec)
+
+mysql> select product_name,unit_price from product;
++--------------+------------+
+| product_name | unit_price |
++--------------+------------+
+| laptop       |     500.00 |
+| smartphone   |     300.00 |
+| headphones   |      30.00 |
+| keyboard     |      20.00 |
+| mouse        |      15.00 |
++--------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from product category= 'electronics';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 'electronics'' at line 1
+mysql> select * from product where category= 'electronics';
++------------+--------------+-------------+------------+
+| product_id | product_name | category    | unit_price |
++------------+--------------+-------------+------------+
+|        101 | laptop       | electronics |     500.00 |
+|        102 | smartphone   | electronics |     300.00 |
+|        103 | headphones   | electronics |      30.00 |
+|        104 | keyboard     | electronics |      20.00 |
+|        105 | mouse        | electronics |      15.00 |
++------------+--------------+-------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select product_id,unit_price from product where unit_price>100;
++------------+------------+
+| product_id | unit_price |
++------------+------------+
+|        101 |     500.00 |
+|        102 |     300.00 |
++------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select avg unit_price(product) from product;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(product) from product' at line 1
+mysql> select avg (unit_price) from product;
++------------------+
+| avg (unit_price) |
++------------------+
+|       173.000000 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select product_name ,unit_price from product where unit_price=(select max(unit_price)from product);
++--------------+------------+
+| product_name | unit_price |
++--------------+------------+
+| laptop       |     500.00 |
++--------------+------------+
+1 row in set (0.01 sec)
+
+mysql> select name,unit_price from product order by unit_price desc;
+ERROR 1054 (42S22): Unknown column 'name' in 'field list'
+mysql> select product_name,unit_price from product order by unit_price desc;
++--------------+------------+
+| product_name | unit_price |
++--------------+------------+
+| laptop       |     500.00 |
+| smartphone   |     300.00 |
+| headphones   |      30.00 |
+| keyboard     |      20.00 |
+| mouse        |      15.00 |
++--------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select product_name,category from product where unit_price >=20 and unit_price <=600;
++--------------+-------------+
+| product_name | category    |
++--------------+-------------+
+| laptop       | electronics |
+| smartphone   | electronics |
+| headphones   | electronics |
+| keyboard     | electronics |
++--------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> select product_name,unit_price from product where unit_price >=20 and unit_price <=600;
++--------------+------------+
+| product_name | unit_price |
++--------------+------------+
+| laptop       |     500.00 |
+| smartphone   |     300.00 |
+| headphones   |      30.00 |
+| keyboard     |      20.00 |
++--------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select product_name,category from product order by unit_price asc;
++--------------+-------------+
+| product_name | category    |
++--------------+-------------+
+| mouse        | electronics |
+| keyboard     | electronics |
+| headphones   | electronics |
+| smartphone   | electronics |
+| laptop       | electronics |
++--------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql>
+
+
+sales value:
+
+mysql> use sales;
+Database changed
+mysql> create table sales(sale_id int,product_id int,quality_sold int,sale_date date,total_price decimal(10,2));
+ERROR 1050 (42S01): Table 'sales' already exists
+mysql> create table sales_1(sale_id int,product_id int,quality_sold int,sale_date date,total_price decimal(10,2));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into sales values(1,101,5,'2024-01-01',2500.00),(2,102,3,'2024-01-02',900.00),(3,103,2,'2024-01-02',60.00),(4,104,4,'2024-01-03',80.00),(5,105,6,'2024-01-03',90.00);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from table sales_1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table sales_1' at line 1
+mysql> select * from sales_1;
+Empty set (0.01 sec)
+
+mysql> select * from sales;
++---------+------------+---------------+------------+-------------+
+| sale_id | product_id | quantity_sold | sale_date  | total_price |
++---------+------------+---------------+------------+-------------+
+|       1 |        101 |             5 | 2024-01-01 |     2500.00 |
+|       2 |        102 |             3 | 2024-01-02 |      900.00 |
+|       3 |        103 |             2 | 2024-01-02 |       60.00 |
+|       4 |        104 |             4 | 2024-01-03 |       80.00 |
+|       5 |        105 |             6 | 2024-01-03 |       90.00 |
+|       1 |        101 |             5 | 2024-01-01 |     2500.00 |
+|       2 |        102 |             3 | 2024-01-02 |      900.00 |
+|       3 |        103 |             2 | 2024-01-02 |       60.00 |
+|       4 |        104 |             4 | 2024-01-03 |       80.00 |
+|       5 |        105 |             6 | 2024-01-03 |       90.00 |
++---------+------------+---------------+------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> select sales_id, sales_date from sales;
+ERROR 1054 (42S22): Unknown column 'sales_id' in 'field list'
+mysql> select sale_id, sale_date from sales;
++---------+------------+
+| sale_id | sale_date  |
++---------+------------+
+|       1 | 2024-01-01 |
+|       2 | 2024-01-02 |
+|       3 | 2024-01-02 |
+|       4 | 2024-01-03 |
+|       5 | 2024-01-03 |
+|       1 | 2024-01-01 |
+|       2 | 2024-01-02 |
+|       3 | 2024-01-02 |
+|       4 | 2024-01-03 |
+|       5 | 2024-01-03 |
++---------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select total_price from sales where total_price>100;
++-------------+
+| total_price |
++-------------+
+|     2500.00 |
+|      900.00 |
+|     2500.00 |
+|      900.00 |
++-------------+
+4 rows in set (0.02 sec)
+
+mysql> select sale_id,total_price from sales where sale_date='2024-01-03';
++---------+-------------+
+| sale_id | total_price |
++---------+-------------+
+|       4 |       80.00 |
+|       5 |       90.00 |
+|       4 |       80.00 |
+|       5 |       90.00 |
++---------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> select sum(total_price) from sales;
++------------------+
+| sum(total_price) |
++------------------+
+|          7260.00 |
++------------------+
+1 row in set (0.01 sec)
+
+mysql> select sum(total_price) from sales;
++------------------+
+| sum(total_price) |
++------------------+
+|          7260.00 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(quantity_sold) from sales;
++--------------------+
+| sum(quantity_sold) |
++--------------------+
+|                 40 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select sale_id,product_id,total_price from sales where quantity_sold>4;
++---------+------------+-------------+
+| sale_id | product_id | total_price |
++---------+------------+-------------+
+|       1 |        101 |     2500.00 |
+|       5 |        105 |       90.00 |
+|       1 |        101 |     2500.00 |
+|       5 |        105 |       90.00 |
++---------+------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> select avg(total_price) from sales;
++------------------+
+| avg(total_price) |
++------------------+
+|       726.000000 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql>
