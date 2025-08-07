@@ -1,0 +1,242 @@
+employee table:
+
+mysql> use employee;
+Database changed
+mysql> create table employee (empid int, name varchar(50), department varchar(50), gender varchar(10), salary decimal(10, 2), age int, experience int);
+ERROR 1050 (42S01): Table 'employee' already exists
+mysql> create table employee_1 (empid int, name varchar(50), department varchar(50), gender varchar(10), salary decimal(10, 2), age int, experience int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into employee values (1, 'alice', 'hr', 'female', 50000, 28, 3), (2, 'bob', 'finance', 'male', 60000, 32, 5), (3, 'charlie', 'it', 'male', 70000, 30, 6), (4, 'david', 'hr', 'male', 48000, 45, 20), (5, 'eva', 'it', 'female', 72000, 29, 4), (6, 'frank', 'finance', 'male', 58000, 35, 8), (7, 'grace', 'marketing', 'female', 50000, 27, 2), (8, 'hannah', 'it', 'female', 75000, 31, 7), (9, 'ivy', 'finance', 'female', 62000, 26, 3), (10, 'jack', 'marketing', 'male', 52000, 38, 10), (11, 'kiran', 'it', 'male', 68000, 33, 9), (12, 'lily', 'hr', 'female', 55000, 40, 15), (13, 'mohan', 'finance', 'male', 61000, 29, 4), (14, 'nina', 'marketing', 'female', 53000, 36, 11), (15, 'oscar', 'it', 'male', 71000, 34, 10);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into employee_1 values (1, 'alice', 'hr', 'female', 50000, 28, 3), (2, 'bob', 'finance', 'male', 60000, 32, 5), (3, 'charlie', 'it', 'male', 70000, 30, 6), (4, 'david', 'hr', 'male', 48000, 45, 20), (5, 'eva', 'it', 'female', 72000, 29, 4), (6, 'frank', 'finance', 'male', 58000, 35, 8), (7, 'grace', 'marketing', 'female', 50000, 27, 2), (8, 'hannah', 'it', 'female', 75000, 31, 7), (9, 'ivy', 'finance', 'female', 62000, 26, 3), (10, 'jack', 'marketing', 'male', 52000, 38, 10), (11, 'kiran', 'it', 'male', 68000, 33, 9), (12, 'lily', 'hr', 'female', 55000, 40, 15), (13, 'mohan', 'finance', 'male', 61000, 29, 4), (14, 'nina', 'marketing', 'female', 53000, 36, 11), (15, 'oscar', 'it', 'male', 71000, 34, 10);
+Query OK, 15 rows affected (0.01 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> select department, sum(salary) as total_salary from employee_1 group by department;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| hr         |    153000.00 |
+| finance    |    241000.00 |
+| it         |    356000.00 |
+| marketing  |    155000.00 |
++------------+--------------+
+4 rows in set (0.01 sec)
+
+mysql> select department from employee group by department having sum(salary) > 200000;
+ERROR 1054 (42S22): Unknown column 'department' in 'field list'
+mysql> select department from employee_1 group by department having sum(salary) > 200000;
++------------+
+| department |
++------------+
+| finance    |
+| it         |
++------------+
+2 rows in set (0.00 sec)
+
+mysql> select department, count(*) as employee_count from employee_1 group by department;
++------------+----------------+
+| department | employee_count |
++------------+----------------+
+| hr         |              3 |
+| finance    |              4 |
+| it         |              5 |
+| marketing  |              3 |
++------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select department from employee_1 group by department having count(*) > 3;
++------------+
+| department |
++------------+
+| finance    |
+| it         |
++------------+
+2 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> select gender, avg(salary) as average_salary from employee_1 group by gender;
++--------+----------------+
+| gender | average_salary |
++--------+----------------+
+| female |   59571.428571 |
+| male   |   61000.000000 |
++--------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select gender, count(*) as employee_count from employee_1 group by gender having count(*) > 5;
++--------+----------------+
+| gender | employee_count |
++--------+----------------+
+| female |              7 |
+| male   |              8 |
++--------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select department from employee_1 group by department having avg(salary) > 60000;
++------------+
+| department |
++------------+
+| finance    |
+| it         |
++------------+
+2 rows in set (0.00 sec)
+
+mysql> select department, gender, count(*) as employee_count from employee_1 group by department, gender;
++------------+--------+----------------+
+| department | gender | employee_count |
++------------+--------+----------------+
+| hr         | female |              2 |
+| finance    | male   |              3 |
+| it         | male   |              3 |
+| hr         | male   |              1 |
+| it         | female |              2 |
+| marketing  | female |              2 |
+| finance    | female |              1 |
+| marketing  | male   |              1 |
++------------+--------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> select department from employee_1 group by department having avg(experience) > 7;
++------------+
+| department |
++------------+
+| hr         |
+| it         |
+| marketing  |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> select department from employee_1 group by department having max(salary) > 70000;
++------------+
+| department |
++------------+
+| it         |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select department, avg(age) as average_age from employee_1 group by department;
++------------+-------------+
+| department | average_age |
++------------+-------------+
+| hr         |     37.6667 |
+| finance    |     30.5000 |
+| it         |     31.4000 |
+| marketing  |     33.6667 |
++------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> select department from employee_1 where gender = 'female' group by department having avg(salary) > 60000;
++------------+
+| department |
++------------+
+| it         |
+| finance    |
++------------+
+2 rows in set (0.00 sec)
+
+mysql> select department from employee_1 group by department having sum(experience) > 20;
++------------+
+| department |
++------------+
+| hr         |
+| it         |
+| marketing  |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> select department, gender, avg(experience) as average_experience from employee_1 group by department, gender;
++------------+--------+--------------------+
+| department | gender | average_experience |
++------------+--------+--------------------+
+| hr         | female |             9.0000 |
+| finance    | male   |             5.6667 |
+| it         | male   |             8.3333 |
+| hr         | male   |            20.0000 |
+| it         | female |             5.5000 |
+| marketing  | female |             6.5000 |
+| finance    | female |             3.0000 |
+| marketing  | male   |            10.0000 |
++------------+--------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> select department from employee_1 group by department having avg(age) < 30;
+Empty set (0.00 sec)
+
+mysql> select department from employee_1 where gender = 'female' group by department having count(*) > 1;
++------------+
+| department |
++------------+
+| hr         |
+| it         |
+| marketing  |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> select department from employee_1 group by department having count(distinct gender) = 2;
++------------+
+| department |
++------------+
+| finance    |
+| hr         |
+| it         |
+| marketing  |
++------------+
+4 rows in set (0.01 sec)
+
+mysql> select department from employee_1 group by department order by avg(experience) desc limit 1;
++------------+
+| department |
++------------+
+| hr         |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select department, gender, sum(salary) as total_salary from employee_1 group by department, gender having sum(salary) > 100000;
++------------+--------+--------------+
+| department | gender | total_salary |
++------------+--------+--------------+
+| hr         | female |    105000.00 |
+| finance    | male   |    179000.00 |
+| it         | male   |    209000.00 |
+| it         | female |    147000.00 |
+| marketing  | female |    103000.00 |
++------------+--------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select department, count(*) as count_under_35 from employee_1 where age < 35 group by department;
++------------+----------------+
+| department | count_under_35 |
++------------+----------------+
+| hr         |              1 |
+| finance    |              3 |
+| it         |              5 |
+| marketing  |              1 |
++------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select department, sum(salary) as total_salary from employee_1 group by department order by total_salary desc limit 3;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| it         |    356000.00 |
+| finance    |    241000.00 |
+| marketing  |    155000.00 |
++------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select department from employee_1 group by department having min(experience) > 5;
+Empty set (0.00 sec)
+
+mysql> select distinct department from employee_1 where salary < 55000;
++------------+
+| department |
++------------+
+| hr         |
+| marketing  |
++------------+
+2 rows in set (0.00 sec)
+
+mysql>
